@@ -11,9 +11,9 @@ int main(void) {
 
     const vamp::collision::Environment<vamp::FloatVector<8>> env;
     vamp::planning::RRTC<vamp::robots::Sphere, vamp::rng::Halton<3>, 8, 8> rrtc;
-    vamp::FloatVector<3> start;
-    vamp::FloatVector<3> goal(std::array<float, 3> { 1.0, 1.0, 1.0 });
-    vamp::planning::RRTCSettings settings;
+    const vamp::FloatVector<3> start;
+    const vamp::FloatVector<3> goal(std::array<float, 3> { 1.0, 1.0, 1.0 });
+    const vamp::planning::RRTCSettings settings;
     const vamp::planning::PlanningResult<3> res
         = rrtc.solve(vamp::robots::Sphere::Configuration(start),
             vamp::robots::Sphere::Configuration(goal), env, settings);
