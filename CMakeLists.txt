@@ -6,6 +6,9 @@ project(
     LANGUAGES CXX
 )
 
+
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
 # set up CPM
 file(
   DOWNLOAD
@@ -16,11 +19,32 @@ file(
 set(CPM_USE_LOCAL_PACKAGES ON)
 include(${CMAKE_CURRENT_BINARY_DIR}/cmake/CPM.cmake)
 
-CPMAddPackage("gh:KavrakiLab/vamp#b56f0a93d86fd6874bf722c3378cd9b9946a3276")
+CPMAddPackage("gh:KavrakiLab/vamp#bd5d218684c1608a61306537e4532932364e3411")
 set(VAMP_INCLUDE_DIRS ${vamp_SOURCE_DIR}/src/impl)
+
+CPMAddPackage("gh:kavrakilab/nigh#97130999440647c204e0265d05a997dbd8da4e70")
+set(NIGH_INCLUDE_DIRS ${nigh_SOURCE_DIR}/src)
+
+CPMAddPackage("gh:orlp/pdqsort#b1ef26a55cdb60d236a5cb199c4234c704f46726")
+set(PDQSORT_INCLUDE_DIRS ${pdqsort_SOURCE_DIR})
+
+list(APPEND VAMP_INCLUDE_DIRS ${NIGH_INCLUDE_DIRS} ${PDQSORT_INCLUDE_DIRS})
+
+if(CMAKE_SYSTEM_PROCESSOR STREQUAL "x86_64")
+  CPMAddPackage("gh:lemire/SIMDxorshift#857c1a01df53cf1ee1ae8db3238f0ef42ef8e490")
+  list(APPEND VAMP_EXT_SOURCES
+    ${SIMDxorshift_SOURCE_DIR}/src/simdxorshift128plus.c
+    ${SIMDxorshift_SOURCE_DIR}/src/xorshift128plus.c)
+  list(APPEND VAMP_INCLUDE_DIRS ${SIMDxorshift_SOURCE_DIR}/include)
+endif()
 
 include_directories(include)
 
+find_package(Eigen3 REQUIRED NO_MODULE)
 
 add_executable(test src/test.cpp)
-target_include_directories(test SYSTEM PRIVATE ${VAMP_INCLUDE_DIRS})
+target_link_libraries(test PRIVATE Eigen3::Eigen)
+target_include_directories(
+    test SYSTEM PRIVATE
+    ${VAMP_INCLUDE_DIRS}
+)

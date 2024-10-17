@@ -1,0 +1,7 @@
+[
+{
+  "directory": "/home/cwr3/projects/vampdep/build/release",
+  "command": "/usr/bin/c++  -I/home/cwr3/projects/vampdep/include -isystem /home/cwr3/projects/vampdep/build/release/_deps/vamp-src/src/impl -isystem /home/cwr3/projects/vampdep/build/release/_deps/nigh-src/src -isystem /home/cwr3/projects/vampdep/build/release/_deps/pdqsort-src -isystem /home/cwr3/projects/vampdep/build/release/_deps/simdxorshift-src/include -isystem /usr/include/eigen3  -o CMakeFiles/test.dir/src/test.cpp.o -c /home/cwr3/projects/vampdep/src/test.cpp",
+  "file": "/home/cwr3/projects/vampdep/src/test.cpp"
+}
+]
