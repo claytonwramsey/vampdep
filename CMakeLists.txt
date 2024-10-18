@@ -6,6 +6,18 @@ project(
     LANGUAGES CXX
 )
 
+if(CMAKE_SYSTEM_PROCESSOR STREQUAL "x86_64")
+	# Need explicit AVX2 for some MacOS clang versions
+	set(VAMP_ARCH "-march=native -mavx2")
+elseif(CMAKE_SYSTEM_PROCESSOR STREQUAL "aarch64" OR CMAKE_SYSTEM_PROCESSOR STREQUAL "arm64")
+	# ARM platforms (aarch64 / arm64)
+	set(VAMP_ARCH "-mcpu=native -mtune=native")
+else()
+	message(FATAL_ERROR "Unsupported architecture ${CMAKE_SYSTEM_PROCESSOR}")
+endif()
+
+set(CMAKE_CXX_STANDARD 17)
+
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${VAMP_ARCH} -Wall -Wextra")
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g -O0")
 set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "${CMAKE_CXX_FLAGS_RELWITHDEBINFO} -g")
